@@ -1,6 +1,7 @@
 %% Opg 1 del:
 
 m=8;
+a=1/2;
 T=1/2*e6;
 Ts=T/m;
 ti=-4*T:Ts:4*T;
