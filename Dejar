@@ -1,0 +1,138 @@
+clc
+close all
+clear all 
+
+%% Opgave 1 del 1 
+M=16;
+N = 10000;
+m = 8;
+T = 1/(2e6);
+a = 1/2;
+%%
+Ts = T/m;
+ti = -4*T:Ts:4*T;
+g = (cos((1+a)*pi*ti/T) + ((pi*(1-a))/(4*a))*sinc((1-a)*ti/T)) ./ (1-(4*a*ti/T).^2);
+g(29) = 0.9089; %ti = -T/4a
+g(37) = 0.9089; %ti = T/4a
+
+
+x = conv(g,g);
+[E,synkpunkt] = max(x);
+
+stem(ti,g);
+title('Plot af g');
+xlabel('Tid');
+ylabel('Amplitude');
+pause
+
+%figure;
+stem(x);
+title('Plot af samlet impulsrespons ')
+xlabel('Tid');
+ylabel('Amplitude');
+pause
+
+%% Del 2 
+
+% Vi kan se, at der ikke er Inrtdymbolinterfarans, på grund af vi kan se at vores amplityde går i 0 efter 8 sampleles efter max aplityden for symbolet.  
+
+%% Opgave 2 Del 1 
+fc = 2/T;
+%Vi starter med at lave en 4X2500 matrice
+c = sign(randi([0, 1],log2(M),N/log2(M)));
+
+v = [-3 -1 3 1];
+a = zeros(1,N/4);
+b = zeros(1,N/4);
+%a_k=2*randi(2,1,N)-3;
+%b_k=2*randi(2,1,N)-3;
+%a0=reshape([a_k;zeros(m-1,N)],1,m*N);
+%b0=reshape([b_k;zeros(m-1,N)],1,m*N);
+for i=1 : N/4
+    a(i) = v(bi2de(c(1:2, i)')+1);
+    b(i) = v(bi2de(c(3:4, i)')+1);
+end
+
+for i=1 : N/4
+    a(i) = v( c(1, i)*2 + c(2, i)*1 + 1 );
+    b(i) = v( c(3, i)*2 + c(4, i)*1 + 1 );
+end
+
+av = reshape([a;zeros(7,length(a))],1,[]);
+bv = reshape([b;zeros(7,length(b))],1,[]);
+
+
+av2 = conv(g,av);
+bv2 = conv(g,bv);
+N = length(av2);
+
+%% opgave 2 del 2
+
+%Vi kan se fra plottet at der er 8 amplitude skift for hver 10^-6 sekund. 
+
+t=(0:N-1)*Ts;
+v =av2.*(cos(2*pi*fc*t)*sqrt(2))+bv2.*(sin(2*pi*fc*t)*sqrt(2));
+%figure;
+plot(t(synkpunkt:synkpunkt+50), v(synkpunkt:synkpunkt+50));
+title('Plot a det transmitterede signal v');
+xlabel('Tid');
+ylabel('Amplitude');
+pause
+
+%% opgave 2 del 3
+
+ESv = abs(fft(v)).^2;
+n = length(v);
+fn = (-n/2:n/2-1)/(n*Ts);
+%figure
+plot(fn,fftshift(ESv));
+title('Energispektret af v');
+xlabel('Tid')
+ylabel('Amplitude')
+pause
+
+%% opgave 3 del 1
+
+I = conv(g,av);
+Q = conv(g,bv);
+
+figure
+cla reset
+hold on
+for j=1:1000
+plot(I(synkpunkt+(j-1)*m),Q(synkpunkt+(j-1)*m),'r*')
+end
+title('modtaget signal med støj');
+xlabel('')
+hold off
+pause
+
+% spørg Lars om labels på x og y aksen
+%% opgave 3 del 2
+
+plot(eyediagram(I, 50));
+%ak = I(synkpunkt+(k-1)*m);
+%bk = Q(synkpunkt+(k-1)*m);
+
+
+%% Opgave 4 del 1 
+
+a = 3; 
+
+
+signal = a+v;
+
+for j=1:1000
+plot(I(synkpunkt+(j-1)*m),Q(synkpunkt+(j-1)*m),'r*')
+end
+title('modtaget signal med støj');
+xlabel('')
+hold off
+pause
+
+
+
+
+
+
+
