@@ -9,3 +9,9 @@ ti=-4*T:Ts:4*T;
 g(t)=(cos(((1+a)*pi*t)/T)+((pi*(1-a))/(4*a))*sinc(((1-a)*t)/T))/(1-((4*a*t)/T)^2)
 g(29)=0.9089; % ti=-T/4α
 g(37)=0.9089; % ti=T/4α
+
+w = (cos(((1+a)*pi*ti)/T));
+v = ((pi*(1-a))/(4*a));
+y = (sinc(((1-a)*ti)/T));
+z = (1-((4*a*ti)/T).^2);
+g = (w+v*y)./z; % indsæt udtryk for g(ti)
