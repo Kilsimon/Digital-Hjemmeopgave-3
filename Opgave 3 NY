@@ -1,0 +1,42 @@
+%% opgave 3: (25%)
+%3.1
+
+% I og Q laves ud fra figuren i opgaven:
+i = v.*(cos(2*pi*fc*t)*sqrt(2));
+q = v.*(sin(2*pi*fc*t)*sqrt(2));
+
+% Disse konverteres:
+I = conv(g,i);
+Q = conv(g,q);
+
+cla reset
+hold on
+
+%16-QAM laves
+for j=1:1000
+plot(I(Synkpunkt+(j-1)*m),Q(Synkpunkt+(j-1)*m),'*')
+end
+title('Modtaget signal uden støj for 1000');
+hold off
+pause
+
+% Der laves et eyediagram, så man kan se, at der ikke er støj.
+eyediagram(I(Synkpunkt:10000+Synkpunkt-1),8);
+pause
+
+% 3.2
+% Det gøres igen, men nu med 2500 i loopet istedet for 1000
+i = v.*(cos(2*pi*fc*t)*sqrt(2));
+q = v.*(sin(2*pi*fc*t)*sqrt(2));
+
+I = conv(g,i);
+Q = conv(g,q);
+
+cla reset
+hold on
+
+for j=1:2500
+plot(I(Synkpunkt+(j-1)*m),Q(Synkpunkt+(j-1)*m),'*')
+end
+title('Modtaget signal uden støj for 2500');
+hold off
