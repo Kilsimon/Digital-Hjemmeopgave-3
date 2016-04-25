@@ -1,0 +1,45 @@
+%% opgave 4
+
+sigma = sqrt(3);
+
+r = v + sigma*randn(1,length(v));
+
+% I og Q laves ud fra figuren i opgaven:
+i = r.*(cos(2*pi*fc*t)*sqrt(2));
+q = r.*(sin(2*pi*fc*t)*sqrt(2));
+
+% Disse konverteres:
+I = conv(g,i);
+Q = conv(g,q);
+
+cla reset
+hold on
+
+%16-QAM laves
+for j=1:1000
+plot(I(synkpunkt+(j-1)*(m)),Q(synkpunkt+(j-1)*(m)),'*')
+end
+title('Modtaget signal med støj for 1000');
+hold off
+pause
+ 
+% Der laves et eyediagram.
+eyediagram(I(synkpunkt:10000+synkpunkt-1),8);
+pause
+
+% 3.2
+% Det gøres igen, men nu med 2500 i loopet istedet for 1000
+i = r.*(cos(2*pi*fc*t)*sqrt(2));
+q = r.*(sin(2*pi*fc*t)*sqrt(2));
+
+I = conv(g,i);
+Q = conv(g,q);
+
+cla reset
+hold on
+
+for j=1:2500
+plot(I(synkpunkt+(j-1)*m),Q(synkpunkt+(j-1)*m),'*')
+end
+title('Modtaget signal med støj for 2500');
+hold off
