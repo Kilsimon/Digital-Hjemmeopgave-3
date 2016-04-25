@@ -22,14 +22,36 @@ end
 title('Modtaget signal med støj for 1000');
 hold off
 pause
+
+aerror=0;
+berror=0;
+cla reset
+hold on
+for j=1:1000
+   if (sign(I(synkpunkt+(j-1)*m))~=sign(a(j)))|...
+      (sign(Q(synkpunkt+(j-1)*m))~=sign(b(j)))
+      % Error is found
+      plot(I(synkpunkt+(j-1)*m),Q(synkpunkt+(j-1)*m),'or');
+      if (sign(I(synkpunkt+(j-1)*m))~=sign(a(j)))
+         aerror=aerror+1;
+      else   
+         berror=berror+1;
+      end   
+   else   
+      plot(I(synkpunkt+(j-1)*m),Q(synkpunkt+(j-1)*m),'*b');
+   end
+end
+hold off
+fejl=aerror+berror
+pause
  
 % Der laves et eyediagram.
 eyediagram(I(synkpunkt:10000+synkpunkt-1),8);
 pause
 
-% 3.2
+% 3.2 
 % Det gøres igen, men nu med 2500 i loopet istedet for 1000
-i = r.*(cos(2*pi*fc*t)*sqrt(2));
+i = r.*(cos(2*pi*fc*t)*sqrt(2)); 
 q = r.*(sin(2*pi*fc*t)*sqrt(2));
 
 I = conv(g,i);
@@ -43,3 +65,25 @@ plot(I(synkpunkt+(j-1)*m),Q(synkpunkt+(j-1)*m),'*')
 end
 title('Modtaget signal med støj for 2500');
 hold off
+
+aerror=0;
+berror=0;
+cla reset
+hold on
+for j=1:2500
+   if (sign(I(synkpunkt+(j-1)*m))~=sign(a(j)))|...
+      (sign(Q(synkpunkt+(j-1)*m))~=sign(b(j)))
+      % Error is found
+      plot(I(synkpunkt+(j-1)*m),Q(synkpunkt+(j-1)*m),'or');
+      if (sign(I(synkpunkt+(j-1)*m))~=sign(a(j)))
+         aerror=aerror+1;
+      else   
+         berror=berror+1;
+      end   
+   else   
+      plot(I(synkpunkt+(j-1)*m),Q(synkpunkt+(j-1)*m),'*b');
+   end
+end
+hold off
+fejl=aerror+berror
+pause
